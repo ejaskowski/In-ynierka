@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="ctx" width="800" height="600"></canvas>
+
+    <div id="chat-text" style="width:500px; height: 100px; overflow-y:scroll" > 
+        <div>Hello</div>
+    </div>
+    
+    <form id="chat-form">
+        <input id="chat-input" type="text" style="width:500px"> </input>
+    </form>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+    var chatText=document.getElementById('chat-text');
+    var chatInput=document.getElementById('chat-input');
+    var chatForm=document.getElementById('chat-form');
+    var ctx = document.getElementById("ctx").getContext("2d");
+        var socket = io();
+
+        //Chat
+
+        socket.on('addToChat', function(data){
+            chatText.innerHTML += '<div>' + data + '</div>';
+        });
+
+        chatForm.onsubmit = function(e){
+            e.preventDefault();
+
+            socket.emit('sendMsgToServer', chatInput.value);
+            chatInput.value = '';
+        };
+
+        // var Img={};
+        // Img.board = new Image();
+        // Img.board.src = "img/hex_board.jpg";
+        // Img.red_pawn = new Image();
+        // Img.red_pawn.src = "img/red_pawn.jpg";
+        // Img.blue_pawn = new Image();
+        // Img.blue_pawn.src = "img/blue_pawn.png";
+
+
+
+        //ctx.drawImage(img,0,0);
+//BOARD
+var hexHeight;
+var hexRadius;
+var hexRectangleHeight;
+var hexRectangleWidth;
+var hexagonAngle = 0.523598776; // 30 degrees in radians
+var sideLength = 25;
+var boardWidth = 11;
+var boardHeight = 11;
+
+    hexHeight = Math.sin(hexagonAngle) * sideLength;
+    hexRadius = Math.cos(hexagonAngle) * sideLength;
+    hexRectangleHeight = sideLength + 2 * hexHeight;
+    hexRectangleWidth = 2 * hexRadius;
+
+        ctx.fillStyle = "#000000";
+        ctx.lineWidth = 2;
+        
+
+    drawBoard(ctx, boardWidth, boardHeight);
+
+    
+    
+    function drawBoard(ctx, width, height) {
+
+        var i,j;
+        //this loop generates a rectangular hexagon grid
+        for(i = 0; i < width; ++i) {
+            for(j = 0; j < height; ++j) {
+
+                drawHexagon(
+                    ctx, 
+                    i * hexRectangleWidth + ((j % width) * hexRadius), 
+                    j * (sideLength + hexHeight)
+                );
+                
+            }
+        }
+    }
+  
+ function drawHexagon(ctx, x, y) {           
+     ctx.beginPath();
+     ctx.moveTo(x + hexRadius, y);
+     ctx.lineTo(x + hexRectangleWidth, y + hexHeight);
+     ctx.lineTo(x + hexRectangleWidth, y + hexHeight + sideLength);
+     ctx.lineTo(x + hexRadius, y + hexRectangleHeight);
+     ctx.lineTo(x, y + sideLength + hexHeight);
+     ctx.lineTo(x, y + hexHeight);
+     ctx.closePath();
+     // Set the default color to black
+     ctx.strokeStyle = "#000000";
+     ctx.stroke();
+  }
+      
+        // socket.on('newPositions', function(data){
+        //       ctx.clearRect(0,0,800,600);
+        //       for(var i = 0; i < data.length; i++){
+        //       ctx.fillText (data[i].number, data[i].x,data[i].y)
+        //       }
+        // })
+
+
+//         function mouseCoordinates(event){
+//       console.log("pageX: ", event.pageX,
+//       "pageY: ", event.pageY,
+//       "clientX: ", event.clientX,
+//       "clientY:", event.clientY)
+//  }
+//  window.addEventListener('mousemove', mouseCoordinates);
+
+
+        
+      </script>
+
+</body>
+</html>
