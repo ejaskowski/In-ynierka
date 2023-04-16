@@ -65,23 +65,23 @@ io.on('connection', (socket) => {
 
 });
 
-setInterval (function (){
-    var pack=[];
-    for(var i in Player_list){
-        var player = Player_list[i];
-        player.x++;
-        player.y++;
-        pack.push({
-            x:player.x++,
-            y:player.y++,
-            number:player.number
-        });
-    }
-    for(var i in Socket_list){
-    var socket = Socket_list[i];
-    socket.emit('newPositions',pack);
-}
-},1000/25);
+// setInterval (function (){
+//     var pack=[];
+//     for(var i in Player_list){
+//         var player = Player_list[i];
+//         player.x++;
+//         player.y++;
+//         pack.push({
+//             x:player.x++,
+//             y:player.y++,
+//             number:player.number
+//         });
+//     }
+//     for(var i in Socket_list){
+//     var socket = Socket_list[i];
+//     socket.emit('newPositions',pack);
+// }
+// },1000/25);
 
 server.listen(3000, () => {
   console.log('listening on *:3000');
