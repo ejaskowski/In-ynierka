@@ -90,8 +90,111 @@ var boardHeight = 11;
                 
             }
         }
+        drawBorders();
     }
-    //HEX
+
+    function drawBorders(){
+        //TODO: te dwie funkcje dałoby się zoptymalizować, są trochę kijowe
+        drawRedBorders();
+        drawBlueBorders();
+    }
+
+    function drawRedBorders(){
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "#ff0000";
+        // upper border
+        ctx.beginPath();
+
+        // initial coordinates
+        var x = 0;
+        var y = hexRectangleHeight / 4;
+
+        ctx.moveTo(x, y);
+
+        for(i = 1; i <= boardWidth * 2; i++){
+            if (i % 2 == 0){
+                y = hexRectangleHeight / 4;
+            } else{
+                y = 0;
+            }
+            
+            x = i * (hexRectangleWidth / 2);
+
+            ctx.lineTo(x, y);
+        }
+        
+        ctx.stroke();
+        ctx.closePath();
+
+        // lower border
+        var lowerX = (boardWidth - 1) * (hexRectangleWidth / 2);
+        var lowerY = (6 * hexRectangleHeight) + (5 * (hexRectangleHeight / 2) - (hexRectangleHeight / 4));
+
+        ctx.beginPath();
+        ctx.moveTo(lowerX, lowerY);
+        
+        for(i = 1; i <= boardWidth * 2; i++){
+            if (i % 2 == 0){
+                y = lowerY;
+            } else{
+                y = lowerY + (hexRectangleHeight / 4);
+            }
+            
+            x = i * (hexRectangleWidth / 2) + lowerX;
+
+            ctx.lineTo(x, y);
+        }
+
+        ctx.stroke();
+        ctx.closePath();
+    }
+
+    function drawBlueBorders(){
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "#0000ff";
+
+        // left border
+        ctx.beginPath();
+        // initial coordinates
+        var x = 0;
+        var y = hexRectangleHeight / 4;
+        ctx.moveTo(x, y);
+
+        for(i = 1; i < boardHeight * 2; i++){
+            if (i % 2 == 0){
+                x += hexRectangleWidth / 2;
+                y += hexRectangleHeight / 4;
+            } else{
+                y += hexRectangleHeight / 2;
+            }
+            
+            ctx.lineTo(x, y);
+        }
+        
+        ctx.stroke();
+        ctx.closePath();
+
+        // right border
+        ctx.beginPath();
+        // initial coordinates
+        var x = hexRectangleWidth * boardWidth;
+        var y = hexRectangleHeight / 4;
+        ctx.moveTo(x, y);
+
+        for(i = 1; i < boardHeight * 2; i++){
+            if (i % 2 == 0){
+                x += hexRectangleWidth / 2;
+                y += hexRectangleHeight / 4;
+            } else{
+                y += hexRectangleHeight / 2;
+            }
+            
+            ctx.lineTo(x, y);
+        }
+        
+        ctx.stroke();
+        ctx.closePath();
+    }
   
  function drawHexagon(ctx, x, y) {           
      ctx.beginPath();
